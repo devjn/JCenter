@@ -1,42 +1,28 @@
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 group = publishedGroupId                               // Maven Group ID for the artifact
 
 
-uploadArchives {
+publishing {
+    publications {
+        maven(MavenPublication) {
+			groupId publishedGroupId
+			artifactId artifact
+			
+			pom.withXml {
+				asNode().appendNode('name', libraryName)
+				asNode().appendNode('description', libraryDescription)
+			}
+
+            from components.java
+        }
+    }
+}
+
+publishing {
     repositories {
-        mavenDeployer {
-            repository(url: repositoryUrl)
-            pom.project {
-				groupId publishedGroupId
-				artifactId artifact
-				
-				// Add your description here
-                name libraryName
-                description libraryDescription
-                url siteUrl
-
-                // Set your license
-                licenses {
-                    license {
-                        name licenseName
-                        url licenseUrl
-                    }
-                }
-                developers {
-                    developer {
-                        id developerId
-                        name developerName
-                        email developerEmail
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-
-                }
-            }
+        maven {
+            url siteUrl
         }
     }
 }
