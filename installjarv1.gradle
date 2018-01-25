@@ -2,13 +2,16 @@ apply plugin: 'maven-publish'
 
 group = publishedGroupId                               // Maven Group ID for the artifact
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId publishedGroupId
-            artifactId artifact
-            
-                // Add your description here
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: repositoryUrl)
+            pom.project {
+				groupId publishedGroupId
+				artifactId artifact
+				
+				// Add your description here
                 name libraryName
                 description libraryDescription
                 url siteUrl
@@ -33,8 +36,7 @@ publishing {
                     url siteUrl
 
                 }
-
-            from components.java
+            }
         }
     }
 }
