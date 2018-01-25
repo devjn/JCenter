@@ -6,15 +6,38 @@ group = publishedGroupId                               // Maven Group ID for the
 publishing {
     publications {
         maven(MavenPublication) {
-			groupId publishedGroupId
-			artifactId artifact
-			
-			pom.withXml {
-				asNode().appendNode('name', libraryName)
-				asNode().appendNode('description', libraryDescription)
-			}
+            groupId publishedGroupId
+            artifactId artifact
 
             from components.java
+            pom.withXml {
+                asNode().children().last() + {
+                    resolveStrategy = Closure.DELEGATE_FIRST
+                    name libraryName
+                    description libraryDescription
+                    url siteUrl
+
+                    licenses {
+                        license {
+                            name licenseName
+                            url licenseUrl
+                        }
+                    }
+                    developers {
+                        developer {
+                            id developerId
+                            name developerName
+                            email developerEmail
+                        }
+                    }
+                    scm {
+                        connection gitUrl
+                        developerConnection gitUrl
+                        url siteUrl
+                    }
+                }
+            }
+
         }
     }
 }
