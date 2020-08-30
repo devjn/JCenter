@@ -1,3 +1,7 @@
+plugins {
+    `maven-publish`
+}
+
 publishing {
     publications {
         register<MavenPublication>("mavenAndroid") {
